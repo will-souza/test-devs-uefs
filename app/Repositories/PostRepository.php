@@ -19,17 +19,16 @@ class PostRepository implements PostRepositoryInterface
         return $post ? (new PostResource($post))->resolve() : null;
     }
 
-    public function create(array $data): array
+    public function create(array $data): Post
     {
-        $post = Post::create($data);
-        return (new PostResource($post))->resolve();
+        return Post::create($data);
     }
 
-    public function update(int $id, array $data): array
+    public function update(int $id, array $data): Post
     {
         $post = Post::findOrFail($id);
         $post->update($data);
-        return (new PostResource($post->fresh()))->resolve();
+        return $post;
     }
 
     public function delete(int $id): bool
