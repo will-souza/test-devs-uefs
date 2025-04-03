@@ -11,8 +11,15 @@ A aplicação foi desenvolvida como parte do processo seletivo para a vaga de En
 - SQLite (banco de dados embutido)
 - Docker + Docker Compose (Containerização)
 - API Restful (Padrão arquitetural)
+- PHPUnit (Testes unitários)
+- Bootstrap (Exibição dos posts)
+- JQuery e Ajax (Consumo da API)
+- Swagger (Documentação da API)
 
 ## 🚀 Execução do projeto
+
+### Requisitos
+__[Docker](https://docs.docker.com/engine/install/) + [Docker Compose](https://docs.docker.com/compose/install/)__
 
 ### Clone o repositório:
 ```bash
@@ -22,7 +29,7 @@ cd test-devs-uefs
 
 ### Construa e inicie os containers:
 ```bash
-docker-compose up -d --build
+docker compose up -d --build
 ```
 
 (Para fins de avaliação, o projeto não precisa de nenhum comando adicional para a sua execução, todas as instalações e scripts são executados pelo Dockerfile).
@@ -56,6 +63,18 @@ A API segue o padrão RESTful e está disponível com o prefixo /api. Todos os e
 - ```GET /tags/{id}``` - Mostra uma tag específica
 - ```PUT /tags/{id}``` - Atualiza uma tag
 - ```DELETE /tags/{id}``` - Remove uma tag
+
+Para mais informações, acesse a rota ```/api/documentation```.
+
+## 🧪 Testes Unitários
+Para executar os testes unitários deve-se usar o seguinte comando:
+```bash
+docker compose exec app php artisan test
+```
+Ou este caso tenha as permissões necessárias:
+```bash
+php artisan test
+```
 
 ## 📄 Licença
 Este projeto é para fins de avaliação técnica.

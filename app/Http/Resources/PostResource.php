@@ -18,8 +18,8 @@ class PostResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'content' => $this->content,
-            'created_at' => $this->created_at->format('d-m-Y H:i:s'),
-            'updated_at' => $this->updated_at->format('d-m-Y H:i:s'),
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
             'user' => new UserResource($this->whenLoaded('user')),
             'tags' => TagResource::collection($this->whenLoaded('tags')),
         ];
