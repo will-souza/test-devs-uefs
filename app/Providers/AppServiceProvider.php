@@ -25,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PostRepositoryInterface::class, PostRepository::class);
         $this->app->bind(TagRepositoryInterface::class, TagRepository::class);
 
+        $this->app->register(\L5Swagger\L5SwaggerServiceProvider::class);
+
     }
 
     /**
