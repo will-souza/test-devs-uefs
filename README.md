@@ -8,7 +8,8 @@ A aplicação foi desenvolvida como parte do processo seletivo para a vaga de En
 ## 🛠️ Tecnologias Utilizadas
 - Laravel 12
 - PHP 8.2
-- SQLite (banco de dados embutido)
+- SQLite (Banco de dados embutido para testes unitários)
+- PostgreSQL (Bando de dados da aplicação)
 - Docker + Docker Compose (Containerização)
 - API Restful (Padrão arquitetural)
 - PHPUnit (Testes unitários)

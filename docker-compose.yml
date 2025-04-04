@@ -1,33 +1,71 @@
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8000:80"
-    volumes:
-      - .:/var/www/html
-      - ./storage:/var/www/html/storage
-      - ./database:/var/www/html/database
-      - ./bootstrap/cache:/var/www/html/bootstrap/cache
+    build: .
+    image: laravel-app
+    container_name: laravel-app
+    restart: unless-stopped
     environment:
-      - APP_ENV=local
-      - APP_DEBUG=true
-      - DB_CONNECTION=sqlite
-      - DB_DATABASE=/var/www/html/database/database.sqlite
+      - APP_ENV=${APP_ENV:-production}
+      - APP_DEBUG=${APP_DEBUG:-false}
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - laravel-network
     depends_on:
-      - composer
+      - db
+      - redis
+    ports:
+    - "8000:80"
+
+  db:
+    image: postgres:15-alpine
+    container_name: laravel-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - laravel-network
 
-  composer:
-    image: composer:2.6
+  redis:
+    image: redis:7-alpine
+    container_name: laravel-redis
+    restart: unless-stopped
     volumes:
-      - .:/app
-    working_dir: /app
-    command: composer install
+      - redis_data:/data
     networks:
       - laravel-network
+
+  scheduler:
+    image: laravel-app
+    container_name: laravel-scheduler
+    restart: unless-stopped
+    depends_on:
+      - app
+    command: >
+      sh -c "while true; do
+        php /var/www/html/artisan schedule:run --verbose --no-interaction &
+        sleep 60
+      done"
+    networks:
+      - laravel-network
+
+  queue:
+    image: laravel-app
+    container_name: laravel-queue
+    restart: unless-stopped
+    depends_on:
+      - app
+    command: php /var/www/html/artisan queue:work --tries=3 --timeout=30
+    networks:
+      - laravel-network
+
+volumes:
+  postgres_data:
+  redis_data:
 
 networks:
   laravel-network:
